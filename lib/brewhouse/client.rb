@@ -63,20 +63,20 @@ module Brewhouse
       path += "?key=#{@api_key}"
 
       if params = options[:params] && !params.empty?
-        q = params.map { |k, v| "#{CGI.escape k.to_s}=#{CGI.escape v.to_s}" }
-        path += "&#{q.join '&'}"
+        q = params.map { |k, v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}" }
+        path += "&#{q.join('&')}"
       end
 
       req = METHODS[method].new(BASE_PATH + path, 'Accept' => CONTENT_TYPE)
 
-      if options.key? :body
+      if options.key?(:body)
         req['Content-Type'] = CONTENT_TYPE
         req.body = options[:body] ? JSON.dump(options[:body]) : ''
       end
 
       http = Net::HTTP.new HOST, PORT
 
-      res = http.start { http.request req }
+      res = http.start { http.request(req) }
 
       case res
       when Net::HTTPSuccess
