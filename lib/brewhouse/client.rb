@@ -38,7 +38,7 @@ module Brewhouse
     PORT = 80
 
     def initialize(api_key = nil)
-      @api_key = api_key
+      @api_key = api_key || Brewhouse.config.api_key
     end
 
     def get(path, params = {}, options = {})
