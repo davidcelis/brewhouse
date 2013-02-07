@@ -22,7 +22,7 @@ module Brewhouse
       end
 
       def body
-        @body ||= JSON.parse(@response.body)
+        @body ||= API::Remapper.prettify(JSON.parse(@response.body))
       end
     end
 
@@ -62,7 +62,8 @@ module Brewhouse
     def request(method, path, options)
       path += "?key=#{@api_key}"
 
-      if params = options[:params] && !params.empty?
+      if params = options[:params] and !params.empty?
+        params = Brewhouse::API::Remapper.uglify(params)
         q = params.map { |k, v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}" }
         path += "&#{q.join('&')}"
       end
